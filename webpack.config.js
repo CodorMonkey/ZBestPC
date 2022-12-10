@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -10,6 +11,7 @@ module.exports = {
     index: './src/index.js',
     login: './src/login.js',
   },
+  devtool: 'source-map',
   output: {
     filename: 'js/[name].[hash:6].js',
     path: path.resolve(__dirname, './dist/')
@@ -62,7 +64,15 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[hash:6].css',
-      chunkFilename: '[name].css'
     })
-  ]
+  ],
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerWebpackPlugin(),
+      new TerserWebpackPlugin({
+        extractComments: false
+      })
+    ]
+  }
 }
