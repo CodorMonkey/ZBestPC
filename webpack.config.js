@@ -5,10 +5,11 @@ const webpack = require('webpack')
 module.exports = {
   mode: 'development',
   entry: {
-    bundle: './src/index.js',
+    index: './src/index.js',
+    login: './src/login.js',
   },
   output: {
-    filename: 'js/bundle.js',
+    filename: 'js/[name].[hash:6].js',
     path: path.resolve(__dirname, './dist/')
   },
   module: {
@@ -38,11 +39,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './src/index.html'
+      template: './src/index.html',
+      chunks: ['index']
     }),
     new HtmlWebpackPlugin({
       filename: 'login.html',
-      template: './src/views/login.html'
+      template: './src/views/login.html',
+      chunks: ['login']
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
