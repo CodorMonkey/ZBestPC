@@ -42,7 +42,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       filename: 'login.html',
-      template: './src/login.html'
+      template: './src/views/login.html'
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
