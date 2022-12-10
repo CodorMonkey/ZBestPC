@@ -6,15 +6,16 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 module.exports = {
-  mode: 'development',
+  mode: 'production',
   entry: {
     index: './src/index.js',
     login: './src/login.js',
   },
   devtool: 'source-map',
   output: {
-    filename: 'js/[name].[hash:6].js',
-    path: path.resolve(__dirname, './dist/')
+    filename: 'js/[name].[contenthash:6].js',
+    path: path.resolve(__dirname, './dist/'),
+    clean: true
   },
   devServer: {
     static: path.join(__dirname, 'dist'),
@@ -42,7 +43,7 @@ module.exports = {
           }
         },
         generator: {
-          filename: 'images/[name].[hash:6][ext]'
+          filename: 'images/[name].[contenthash:6][ext]'
         }
       },
     ]
@@ -63,11 +64,10 @@ module.exports = {
       jQuery: 'jquery',
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[hash:6].css',
+      filename: 'css/[name].[contenthash:6].css',
     })
   ],
   optimization: {
-    minimize: true,
     minimizer: [
       new CssMinimizerWebpackPlugin(),
       new TerserWebpackPlugin({
