@@ -12,6 +12,13 @@ module.exports = {
     filename: 'js/[name].[hash:6].js',
     path: path.resolve(__dirname, './dist/')
   },
+  devServer: {
+    static: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 9000,
+    hot: false,
+    liveReload: true
+  },
   module: {
     rules: [
       {
