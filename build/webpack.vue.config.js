@@ -4,21 +4,23 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
+const BASE_PATH = path.resolve(__dirname, '../')
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
-    index: './src/index.js',
-    login: './src/login.js',
+    index: path.resolve(BASE_PATH, './src/main.js'),
   },
   devtool: 'source-map',
   output: {
     filename: 'js/[name].[contenthash:6].js',
-    path: path.resolve(__dirname, './dist/'),
+    path: path.resolve(BASE_PATH, './dist/'),
     clean: true
   },
   devServer: {
-    static: path.join(__dirname, 'dist'),
+    static: path.resolve(BASE_PATH, 'dist'),
     compress: true,
     port: 9000,
     hot: false,
@@ -27,9 +29,15 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.html$/,
-        use: ['html-loader']
+        test: /\.vue$/,
+        loader: 'vue-loader'
       },
+      // html-loader和vue-loader会冲突，如果同时使用，vue-loader必须在html-loader之前
+      // 理论上Vue项目中，不需要html-loader
+      // {
+      //   test: /\.html$/,
+      //   use: ['html-loader']
+      // },
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader']
@@ -51,13 +59,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: './src/index.html',
+      template: path.resolve(BASE_PATH, './public/index.html'),
       chunks: ['index']
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'login.html',
-      template: './src/views/login.html',
-      chunks: ['login']
     }),
     new webpack.ProvidePlugin({
       $: 'jquery',
@@ -65,7 +68,8 @@ module.exports = {
     }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash:6].css',
-    })
+    }),
+    new VueLoaderPlugin(),
   ],
   optimization: {
     minimizer: [
@@ -74,5 +78,5 @@ module.exports = {
         extractComments: false
       })
     ]
-  }
+  },
 }
