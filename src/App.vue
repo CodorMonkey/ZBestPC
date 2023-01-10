@@ -1,20 +1,15 @@
 <template>
-<div class="app">
-  {{ msg }}
-</div>
+  <router-view/>
 </template>
 
 <script>
 export default {
   name: 'App',
   data() {
-    return {
-      msg: 'hello vue！'
-    }
+    return {}
   },
 }
 </script>
 
 <style scoped>
-
 </style>
