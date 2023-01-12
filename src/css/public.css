@@ -477,6 +477,11 @@ body {
   position: relative;
 }
 
+#app {
+  height: 100%;
+  width: 100%;
+}
+
 .gotop {
   position: fixed;
   right: 20px;
